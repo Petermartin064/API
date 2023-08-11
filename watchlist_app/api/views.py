@@ -22,7 +22,7 @@ class MovieListAV(APIView):
     
 class MovieDetailAV(APIView):
     
-    def get(self, request, ):
+    def get(self, request, pk):
         try:
             movie = Movie.objects.get(pk = pk)
         except Movie.DoesNotExist: 
