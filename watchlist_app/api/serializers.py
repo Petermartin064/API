@@ -4,6 +4,7 @@ from watchlist_app.models import Movie
 def name_Length(value):
     if len(value) < 2:
         raise serializers.ValidationError("Name must be at least 2 characters long")
+    
 class MovieSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only = True)
     name = serializers.CharField(validators=[name_Length])
