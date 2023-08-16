@@ -70,7 +70,7 @@ class StreamPlatformAV(APIView):
 
 class StreamPlatformDetailAV(APIView):
     
-    def get(self, pk):
+    def get(self, request, pk):
         try:
             Platform = StreamPlatform.objects.get(pk = pk)
         except StreamPlatform.DoesNotExist: 
