@@ -8,13 +8,13 @@ class WatchListSerializer(serializers.ModelSerializer):
         # fields =['id', 'name', 'description', ]
         # exclude = ['active']
         
-class StreamPlatformSerializer(serializers.ModelSerializer):
+class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
     WatchList = WatchListSerializer(many = True, read_only = True)
+    
     class Meta:
         model = StreamPlatform
         fields = '__all__'
         
-
 # def name_Length(value):
 #     if len(value) < 2:
 #         raise serializers.ValidationError("Name must be at least 2 characters long")
