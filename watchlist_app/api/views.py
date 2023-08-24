@@ -105,6 +105,7 @@ class StreamplatformVS(viewsets.ModelViewSet):
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
     
+<<<<<<< HEAD
 # class StreamplatformVS(viewsets.ViewSet):
 #     def list(self, request):
 #         queryset = StreamPlatform.objects.all()
@@ -125,6 +126,20 @@ class StreamplatformVS(viewsets.ModelViewSet):
 #         else:
 #             return Response(serializer.errors) 
 
+=======
+    
+class StreamplatformVS(viewsets.ViewSet):
+    def list(self, request):
+        queryset = StreamPlatform.objects.all()
+        serializer = StreamPlatformSerializer(queryset, many=True, context ={'request':request})
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = StreamPlatform.objects.all()
+        Watchlist = get_object_or_404(queryset, pk=pk, context ={'request':request})
+        serializer = StreamPlatformSerializer(Watchlist)
+        return Response(serializer.data)
+>>>>>>> d0050c47d127061fed648010edb9b1b0664a70c3
 
 class StreamPlatformAV(APIView):
     
