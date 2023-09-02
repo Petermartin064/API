@@ -9,12 +9,13 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 #from rest_framework.decorators import api_view
 
-from watchlist_app.api.permissions import AdminOrReadOnly, ReviewUserOrReadOnly
+from watchlist_app.api.permissions import IsReviewUserOrReadOnly, IsAdminOrReadOnly
 from watchlist_app.models import StreamPlatform, WatchList, Review
 from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         return Review.objects.all()
@@ -51,30 +52,12 @@ class ReviewList(generics.ListAPIView):
 class ReviewDetail( generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [ReviewUserOrReadOnly]
+    permission_classes = [IsReviewUserOrReadOnly]
     
-
-# class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
-    
-#     queryset = Review.objects.all()
-#     serializer_class = ReviewSerializer
-    
-#     def get(self, request, *args, **kwargs):
-#         return self.retrieve(request, *args, **kwargs)
-    
-# class ReviewList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
-    
-#     queryset = Review.objects.all()
-#     serializer_class = ReviewSerializer
-
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
-
-#     def post(self, request, *args, **kwargs):
-#         return self.create(request, *args, **kwargs)
 
 class WatchListAV(APIView):
-
+    permission_classes = [IsAdminOrReadOnly]
+    
     def get(self, request):
         movies = WatchList.objects.all()
         serializer = WatchListSerializer(movies, many = True)
@@ -89,6 +72,7 @@ class WatchListAV(APIView):
             return Response(serializer.errors) 
     
 class WatchDetailAV(APIView):
+    permission_classes = [IsAdminOrReadOnly]
     
     def get(self, request, pk):
         try:
@@ -122,31 +106,13 @@ class WatchDetailAV(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class StreamplatformVS(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
     
-# class StreamplatformVS(viewsets.ViewSet):
-#     def list(self, request):
-#         queryset = StreamPlatform.objects.all()
-#         serializer = StreamPlatformSerializer(queryset, many=True, context ={'request':request})
-#         return Response(serializer.data)
-
-#     def retrieve(self, request, pk):
-#         queryset = StreamPlatform.objects.all()
-#         Watchlist = get_object_or_404(queryset, pk=pk)
-#         serializer = StreamPlatformSerializer(Watchlist, context ={'request':request})
-#         return Response(serializer.data)
-    
-#     def create(self, request):
-#         serializer = StreamPlatformSerializer(data = request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         else:
-#             return Response(serializer.errors) 
-
 
 class StreamPlatformAV(APIView):
+    permission_classes = [IsAdminOrReadOnly]
     
     def get(self, request):
         Platform = StreamPlatform.objects.all()
@@ -162,6 +128,7 @@ class StreamPlatformAV(APIView):
             return Response(serializer.errors) 
 
 class StreamPlatformDetailAV(APIView):
+    permission_classes = [IsAdminOrReadOnly]
     
     def get(self, request, pk):
         try:
