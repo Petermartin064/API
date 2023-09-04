@@ -19,6 +19,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('<int:pk>/review/', ReviewList.as_view(), name='streamplatform-detail'),
     path('<int:pk>/createreview/', ReviewCreate.as_view(), name='review-create'),
-    path('stream/review/<int:pk>/', ReviewDetail.as_view(), name='review-detail')
+    path('review/<int:pk>/', ReviewDetail.as_view(), name='review-detail')
 ]
  
