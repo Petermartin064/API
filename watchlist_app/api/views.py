@@ -7,11 +7,21 @@ from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.throttling import UserRateThrottle
 #from rest_framework.decorators import api_view
 
 from watchlist_app.api.permissions import IsReviewUserOrReadOnly, IsAdminOrReadOnly
 from watchlist_app.models import StreamPlatform, WatchList, Review
 from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
+
+# class ThrottleView(APIView):
+#     throttle_classes = [UserRateThrottle]
+
+#     def get(self, request, format=None):
+#         content = {
+#             'status': 'request was permitted'
+#         }
+#         return Response(content)
 
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer

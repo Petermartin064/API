@@ -134,13 +134,22 @@ REST_FRAMEWORK = {
     #     ],
     
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '1/day',
+        'user': '3/day'
+    }
 }
 
-SIMPLE_JWT = {
-    'ROTATE_REFRESH_TOKENS' : True,
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
-}
+# SIMPLE_JWT = {
+#     'ROTATE_REFRESH_TOKENS' : True,
+#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
+# }
