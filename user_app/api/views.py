@@ -3,8 +3,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
+from rest_framework_simplejwt.tokens import RefreshToken
 from user_app.api.serializers import RegistrationSerializer
-from user_app import models
+# from user_app import models
 
 
 @api_view(['POST'])
@@ -21,12 +22,16 @@ def Registration_view(request):
         
         if serializer.is_valid():
             account = serializer.save()
-            
+            refresh = RefreshToken.for_user(account)
             data = {
                 'response': 'Registration successful!',
                 'username': account.username,
                 'email': account.email,
-                'token': Token.objects.get(user=account).key
+                # 'token': Token.objects.get(user=account).key
+                'token' : {
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                }
             }
             
             return Response(data, status=status.HTTP_201_CREATED)
