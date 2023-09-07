@@ -9,6 +9,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle,ScopedRateThrottle
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 #from rest_framework.decorators import api_view
 
 from watchlist_app.api.throttle import ReviewCreateThrottle, ReviewListThrottle
@@ -73,6 +74,15 @@ class ReviewDetail( generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsReviewUserOrReadOnly]
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = 'review-detail'
+    
+
+class WatchListSF(generics.ListAPIView):
+    queryset = WatchList.objects.all()
+    serializer_class = WatchListSerializer
+    # permission_classes = [IsAuthenticated]
+    # throttle_classes = [ReviewListThrottle, AnonRateThrottle]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['Title', 'Platform__Name']
     
 
 class WatchListAV(APIView):
