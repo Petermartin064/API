@@ -9,7 +9,8 @@ class ReviewSerializer(serializers.ModelSerializer):
         # fields = '__all__'
 
 class WatchListSerializer(serializers.ModelSerializer):
-    reviews = ReviewSerializer(many = True, read_only = True)
+    # reviews = ReviewSerializer(many = True, read_only = True)
+    Platform = serializers.CharField(source='Platform.Name')
     class Meta:
         model = WatchList
         fields = '__all__'
