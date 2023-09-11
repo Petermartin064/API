@@ -9,14 +9,20 @@ class ReviewSerializer(serializers.ModelSerializer):
         # fields = '__all__'
 
 class WatchListSerializer(serializers.ModelSerializer):
-    # reviews = ReviewSerializer(many = True, read_only = True)
-    Platform = serializers.CharField(source='Platform.Name')
     class Meta:
         model = WatchList
         fields = '__all__'
-        # fields =['id', 'name', 'description', ]
-        # exclude = ['active']
         
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        platform_id = representation['Platform']
+        platform_name = StreamPlatform.objects.get(id=platform_id).Name
+        representation['Platform'] = platform_name
+        return representation
+
+
+        
+    
 class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
     WatchList = WatchListSerializer(many = True, read_only = True)
     class Meta:

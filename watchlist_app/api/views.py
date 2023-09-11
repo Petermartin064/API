@@ -76,13 +76,13 @@ class ReviewDetail( generics.RetrieveUpdateDestroyAPIView):
     throttle_scope = 'review-detail'
     
 
-class WatchListSF(generics.ListAPIView):
-    queryset = WatchList.objects.all()
-    serializer_class = WatchListSerializer
-    # permission_classes = [IsAuthenticated]
-    # throttle_classes = [ReviewListThrottle, AnonRateThrottle]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['Title', 'Platform__Name']
+# class WatchListSF(generics.ListAPIView):
+#     queryset = WatchList.objects.all()
+#     serializer_class = WatchListSerializer
+#     # permission_classes = [IsAuthenticated]
+#     # throttle_classes = [ReviewListThrottle, AnonRateThrottle]
+#     filter_backends = [filters.SearchFilter]
+#     search_fields = ['Title', 'Platform__Name']
     
 
 class WatchListAV(APIView):
@@ -90,16 +90,16 @@ class WatchListAV(APIView):
     
     def get(self, request):
         movies = WatchList.objects.all()
-        serializer = WatchListSerializer(movies, many = True)
+        serializer = WatchListSerializer(movies, many=True)
         return Response(serializer.data)
     
     def post(self, request):
-        serializer = WatchListSerializer(data = request.data)
+        serializer = WatchListSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        else:
-            return Response(serializer.errors) 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     
 class WatchDetailAV(APIView):
     permission_classes = [IsAdminOrReadOnly]
