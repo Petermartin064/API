@@ -30,7 +30,7 @@ class UserReview(generics.ListAPIView):
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
     permission_classes = [IsAuthenticated]
-    throttle_classes = [ReviewCreateThrottle, AnonRateThrottle]
+    # throttle_classes = [ReviewCreateThrottle, AnonRateThrottle]
     
     def get_queryset(self):
         return Review.objects.all()
