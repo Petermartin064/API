@@ -76,13 +76,13 @@ class ReviewDetail( generics.RetrieveUpdateDestroyAPIView):
     throttle_scope = 'review-detail'
     
 
-# class WatchListSF(generics.ListAPIView):
-#     queryset = WatchList.objects.all()
-#     serializer_class = WatchListSerializer
-#     # permission_classes = [IsAuthenticated]
-#     # throttle_classes = [ReviewListThrottle, AnonRateThrottle]
-#     filter_backends = [filters.SearchFilter]
-#     search_fields = ['Title', 'Platform__Name']
+class WatchListSF(generics.ListAPIView):
+    queryset = WatchList.objects.all()
+    serializer_class = WatchListSerializer
+    # permission_classes = [IsAuthenticated]
+    # throttle_classes = [ReviewListThrottle, AnonRateThrottle]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['Title', 'Platform__Name']
     
 
 class WatchListAV(APIView):
