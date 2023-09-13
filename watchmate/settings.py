@@ -151,8 +151,8 @@ REST_FRAMEWORK = {
         'review-detail': '5/day',
     },
     
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 4,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 4,
 }
 
 # SIMPLE_JWT = {
