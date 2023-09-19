@@ -14,7 +14,7 @@ from watchlist_app.api.views import (
     )
  
 router = DefaultRouter()
-router.register('stream', StreamplatformVS, basename ='stream')
+router.register('stream', StreamplatformVS, basename ='streamplatform')
  
 urlpatterns = [
     path('list/', WatchListAV.as_view(), name='movie-list'),
