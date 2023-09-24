@@ -33,3 +33,22 @@ class StreamPlatformTestCase(APITestCase):
     def test_streamplatform_id(self):
         response =self.client.get(reverse('streamplatform-detail', args=(self.stream.id,)))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+class WatchListTestCase(APITestCase):
+    
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='password123')
+        self.token = Token.objects.get(user__username='test')
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        
+        self.stream = models.StreamPlatform.objects.create(Name='Netflix', About='streaming platform', Website='https://www.netflix.com')
+        
+    def test_watchlist_create(self):
+        data ={
+            'Platform' : self.stream,
+            'Title' : 'Movie',
+            'Description' : 'Great movie',
+            'Active' : True
+        }
+        response =self.client.post(reverse('movie-list'), data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
