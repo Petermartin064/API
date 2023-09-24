@@ -43,6 +43,8 @@ class WatchListTestCase(APITestCase):
         
         self.stream = models.StreamPlatform.objects.create(Name='Netflix', About='streaming platform', Website='https://www.netflix.com')
         
+        self.watchlist = models.WatchList.objects.create(Platform=self.stream, Title='FastX', Description='great movie', Active=True)
+        
     def test_watchlist_create(self):
         data ={
             'Platform' : self.stream,
@@ -51,4 +53,35 @@ class WatchListTestCase(APITestCase):
             'Active' : True
         }
         response =self.client.post(reverse('movie-list'), data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+    def test_watchlist_list(self):
+        response= self.client.get(reverse('movie-list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    def test_watchlist_ind(self):
+        response= self.client.get(reverse('movie-detail', args=(self.watchlist.id,)))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(models.WatchList.objects.count(), 1)
+        self.assertEqual(models.WatchList.objects.get().Title, 'FastX')
+        
+    def test_watchlist_amd(self):
+        data={
+            'Platform' : self.stream,
+            'Title' : 'Fast saga',
+            'Description' : 'Good movie',
+            'Active' : False
+        }
+        response =self.client.put(reverse('movie-list'), data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+    
+    def test_watchlist_del(self):
+        data={
+            'Platform' : self.stream,
+            'Title' : 'Fast saga',
+            'Description' : 'Good movie',
+            'Active' : True
+        }
+        response =self.client.delete(reverse('movie-list'), data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
