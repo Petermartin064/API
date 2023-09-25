@@ -77,13 +77,7 @@ class WatchListTestCase(APITestCase):
         
     
     def test_watchlist_del(self):
-        data={
-            'Platform' : self.stream,
-            'Title' : 'Fast saga',
-            'Description' : 'Good movie',
-            'Active' : True
-        }
-        response =self.client.delete(reverse('movie-list'), data)
+        response =self.client.delete(reverse('movie-detail', args=(self.watchlist.id,)))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 class ReviewTestCase(APITestCase):
@@ -146,12 +140,11 @@ class ReviewTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
     def test_review_del(self):
-        data={
-             'review_user' : self.user,
-            'Rating' : 4,
-            'Description' : 'Great movie',
-            'Watchlist' : self.watchlist,
-            'Active' : True
-        }
-        response =self.client.delete(reverse('movie-list'), data)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        response =self.client.delete(reverse('review-detail', args=(self.review.id,)))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+    
+    def test_review_del_unauth(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.delete(reverse('review-detail', args=(self.watchlist.id,)))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        
